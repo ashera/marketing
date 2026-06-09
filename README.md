@@ -59,6 +59,21 @@ ffmpeg -y \
   output/frockd-launch-final.mp4
 ```
 
+## Docs & tooling
+
+| Path | What |
+|------|------|
+| [`docs/PRODUCTION.md`](docs/PRODUCTION.md) | End-to-end playbook + the gotchas we've already solved (pronunciation, word budget, audio-clip trap, enhancer behaviour) + pre-flight checklist |
+| [`docs/higgsfield-reference.md`](docs/higgsfield-reference.md) | Avatar / setting IDs, model params & CLI quirks, cost benchmarks |
+| [`docs/brand.md`](docs/brand.md) | Colours, fonts, logo usage, voice/tone, overlay spec, pronunciation lexicon |
+| [`scripts/generate.ps1`](scripts/generate.ps1) | Render via higgsfield (cost-estimate-first; `-Go` to spend). Known-good defaults baked in. |
+| [`scripts/postproduce.sh`](scripts/postproduce.sh) | Overlays + ducked music in one ffmpeg pass; verifies no audio end-clip |
+| [`scripts/burn-captions.sh`](scripts/burn-captions.sh) | Burn SRT captions (Archivo Black) for silent-autoplay feeds |
+| [`scripts/export-formats.sh`](scripts/export-formats.sh) | Repurpose 9:16 → 1:1 and 16:9 with blurred-fill background |
+| [`subtitles/frockd-launch.srt`](subtitles/frockd-launch.srt) | Caption timings for the launch ad |
+
+Scripts require **ffmpeg** (with libx264; libass for captions). If ffmpeg isn't on `PATH`, set `FFMPEG`/`FFPROBE` env vars to the binaries. Run the `.sh` scripts with `bash scripts/<name>.sh`.
+
 ## Conventions
 
 - **`prompt-log.md`** — every image/video generation is logged here with title, datetime, description, cost, and both the **submitted** and **enhanced** prompts.
