@@ -76,6 +76,8 @@ Scripts require **ffmpeg** (with libx264; libass for captions). If ffmpeg isn't 
 
 ## Conventions
 
+The canonical, detailed version lives in [`CONVENTIONS.md`](CONVENTIONS.md). In short:
+
 - **`prompt-log.md`** — every image/video generation is logged here with title, datetime, description, cost, and both the **submitted** and **enhanced** prompts.
 - **`ref-ids.md`** — every Higgsfield reference upload is recorded as `UUID → file`.
 - **Cost first** — a Higgsfield cost estimate is run and reviewed before every paid render.
