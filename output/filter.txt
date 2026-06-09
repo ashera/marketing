@@ -1,0 +1,11 @@
+[2:v]format=rgba,scale=450:-1,colorchannelmixer=aa=0.9[logo];
+[0:v][logo]overlay=x=(W-w)/2:y=70[v0];
+[v0]drawbox=x=0:y=1520:w=1080:h=300:color=0xe07c8a@0.92:t=fill:enable='between(t,10.8,15)'[v1];
+[v1]drawtext=fontfile=brand/fonts/ArchivoBlack-Regular.ttf:textfile=output/ovl/hook.txt:fontcolor=white:fontsize=88:x=(w-text_w)/2:y=1360:shadowcolor=black@0.5:shadowx=4:shadowy=4:alpha='if(lt(t,0.2),0,if(lt(t,0.5),(t-0.2)/0.3,if(lt(t,2.7),1,if(lt(t,3.0),(3.0-t)/0.3,0))))'[v2];
+[v2]drawtext=fontfile=brand/fonts/ArchivoBlack-Regular.ttf:textfile=output/ovl/mid1.txt:fontcolor=white:fontsize=48:x=(w-text_w)/2:y=1300:shadowcolor=black@0.5:shadowx=4:shadowy=4:alpha='if(lt(t,4.3),0,if(lt(t,4.6),(t-4.3)/0.3,if(lt(t,8.2),1,if(lt(t,8.5),(8.5-t)/0.3,0))))'[v3];
+[v3]drawtext=fontfile=brand/fonts/ArchivoBlack-Regular.ttf:textfile=output/ovl/mid2.txt:fontcolor=white:fontsize=48:x=(w-text_w)/2:y=1372:shadowcolor=black@0.5:shadowx=4:shadowy=4:alpha='if(lt(t,4.3),0,if(lt(t,4.6),(t-4.3)/0.3,if(lt(t,8.2),1,if(lt(t,8.5),(8.5-t)/0.3,0))))'[v4];
+[v4]drawtext=fontfile=brand/fonts/ArchivoBlack-Regular.ttf:textfile=output/ovl/url.txt:fontcolor=white:fontsize=74:x=(w-text_w)/2:y=1560:shadowcolor=black@0.45:shadowx=3:shadowy=3:alpha='if(lt(t,10.9),0,if(lt(t,11.2),(t-10.9)/0.3,1))'[v5];
+[v5]drawtext=fontfile=brand/fonts/ArchivoBlack-Regular.ttf:textfile=output/ovl/free.txt:fontcolor=white:fontsize=40:x=(w-text_w)/2:y=1680:shadowcolor=black@0.45:shadowx=3:shadowy=3:alpha='if(lt(t,10.9),0,if(lt(t,11.2),(t-10.9)/0.3,1))'[vout];
+[0:a]apad,atrim=0:15.07,asetpts=N/SR/TB[vo];
+[1:a]volume=0.104,afade=t=in:st=0:d=0.5,afade=t=out:st=14.2:d=0.85,apad,atrim=0:15.07,asetpts=N/SR/TB[mus];
+[vo][mus]amix=inputs=2:duration=longest:normalize=0[aout]

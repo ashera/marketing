@@ -1,0 +1,14 @@
+# Higgsfield skills / tooling (installed separately, contains machine-specific symlinks)
+.agents/
+skills-lock.json
+
+# Scratch / temp working files
+.last-prompt.txt
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Node (only if any local installs happen here)
+node_modules/
