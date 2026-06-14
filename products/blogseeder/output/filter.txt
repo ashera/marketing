@@ -1,0 +1,12 @@
+[0:v]scale=1080:1920,setsar=1[base];
+[2:v]format=rgba,scale=140:-1[logo];
+[base][logo]overlay=x=56:y=56[v0];
+[3:v]scale=380:-1,pad=iw+10:ih+10:5:5:white@0.95,format=rgba,fade=t=in:st=5.6:d=0.35:alpha=1,fade=t=out:st=10.0:d=0.4:alpha=1[ui];
+[v0][ui]overlay=x=(W-w)/2:y=1010[v1];
+[v1]drawtext=fontfile=brand/fonts/PlusJakartaSans-800.ttf:textfile=output/ovl/hook.txt:fontcolor=white:fontsize=78:x=(w-text_w)/2:y=1400:shadowcolor=black@0.5:shadowx=4:shadowy=4:alpha='if(lt(t,0.2),0,if(lt(t,0.5),(t-0.2)/0.3,if(lt(t,2.7),1,if(lt(t,3.0),(3.0-t)/0.3,0))))'[v2];
+[v2]drawbox=x=0:y=1520:w=1080:h=300:color=0x2d9f77@0.92:t=fill:enable='between(t,10.8,15)'[v3];
+[v3]drawtext=fontfile=brand/fonts/PlusJakartaSans-800.ttf:textfile=output/ovl/url.txt:fontcolor=white:fontsize=76:x=(w-text_w)/2:y=1556:shadowcolor=black@0.45:shadowx=3:shadowy=3:alpha='if(lt(t,10.9),0,if(lt(t,11.2),(t-10.9)/0.3,1))'[v4];
+[v4]drawtext=fontfile=brand/fonts/PlusJakartaSans-800.ttf:textfile=output/ovl/tag.txt:fontcolor=white:fontsize=38:x=(w-text_w)/2:y=1672:shadowcolor=black@0.45:shadowx=3:shadowy=3:alpha='if(lt(t,10.9),0,if(lt(t,11.2),(t-10.9)/0.3,1))'[vout];
+[0:a]apad,atrim=0:15.07,asetpts=N/SR/TB[vo];
+[1:a]volume=0.104,afade=t=in:st=0:d=0.5,afade=t=out:st=14.2:d=0.85,apad,atrim=0:15.07,asetpts=N/SR/TB[mus];
+[vo][mus]amix=inputs=2:duration=longest:normalize=0[aout]

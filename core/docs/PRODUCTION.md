@@ -47,11 +47,18 @@ No music parameter exists on the model. Mix a **licence-cleared** track (Pixabay
 ### 7. Keep the raw render
 Always keep `output/*-raw.mp4`. It's the free re-edit point — change overlays/music without re-spending credits.
 
+### 8. `ip_detected` blocks — and the low-res-first defence
+Higgsfield's IP/content filter can return **`ip_detected`** (no video) and it **charges credits with NO refund** (generic `failed` jobs DO auto-refund). Triggers seen: feeding a **web product** or **website screenshot** that embeds third-party stock imagery/branding into the model — instead, composite real UI/logos in **post** (IP-safe, and crisper). The filter is also **inconsistent** — the same recipe passed at 480p but blocked at 720p. Defences:
+- **Always run a cheap 480p test first** (cost scales: 480p≈52, 720p:75, 1080p:150); only spend on the full-res final after a clean low-res pass.
+- Don't feed website screenshots / web products with stock photos; add branding in post (`UI_IMAGE` input to `postproduce.sh`).
+- If full-res keeps blocking, **ship the post-produced upscaled 480p** raw — `output/filter.txt` scales the source to 1080×1920, so an upscaled 480p still yields a 1080-frame deliverable.
+
 ## Pre-flight checklist
 
 - [ ] Script ≤ ~35 spoken words; brand spelled "frocked" in dialogue; URL its own final beat
 - [ ] Reference images uploaded + logged in `ref-ids.md`
 - [ ] Cost estimate run and approved
+- [ ] **480p test render passed** (moderation + audio/pronunciation) before any full-res final
 - [ ] Rendered; raw saved as `output/<name>-raw.mp4`
 - [ ] QC: frames checked, **audio listened** (accent + full URL), phone screen legible
 - [ ] Post: overlays + ducked music; (optional) captions

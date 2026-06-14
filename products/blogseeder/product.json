@@ -1,0 +1,17 @@
+{
+  "name": "blogseeder",
+  "site": "https://blogger-production-5b98.up.railway.app/",
+  "cta_url": "https://blogseeder.com",
+  "avatar": "daf4bf2e-c19e-4879-805b-bcfa6eda61f2",
+  "setting": "d39dda10-643c-44e2-bfc8-2451dddde7d9",
+  "web_product": "",
+  "image": "",
+  "aspect": "9:16",
+  "resolution": "720p",
+  "duration": 15,
+  "mode": "ugc",
+  "music": "audio/BlippyTrance.mp3",
+  "logo": "brand/blogseeder-icon.png",
+  "filter": "output/filter.txt",
+  "_notes": "avatar=Clara, setting=Office. site=working Railway URL; cta_url=brand domain shown/spoken in the ad. music is a candidate (CC-BY) pending final pick."
+}

@@ -31,6 +31,10 @@ Only ever clean scratch/QC artifacts (extracted frame folders, temp previews);
 preserve raws, finals, `output/filter.txt`, overlay text, brand assets, and fonts.
 *Why:* re-rendering costs credits and time; the raw is the cheap re-edit point.
 
+## 5. Low-res test render before any full-res final
+Always render a cheap **480p** test first to confirm it passes moderation and the content/audio are right, *then* render the full-res (720p/1080p) final. Cost scales with resolution (15s ≈ 480p:52, 720p:75, 1080p:150 credits). Note the refund asymmetry: generic `failed` renders **auto-refund**, but **`ip_detected` moderation blocks are charged and do NOT refund** — so cheap-first protects credits. The IP filter is also *inconsistent* (a recipe can pass at 480p yet block at 720p).
+*Why:* moderation blocks and pronunciation/QC issues get caught for ~52 credits instead of 150.
+
 ---
 See also: [docs/PRODUCTION.md](docs/PRODUCTION.md) (workflow + gotchas), and the
 [root README](../README.md) for repo structure.

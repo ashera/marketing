@@ -27,11 +27,16 @@ for f in "$RAW" "$MUSIC" "$LOGO" "$FILTER"; do
   [ -f "$f" ] || { echo "Missing: $f" >&2; exit 1; }
 done
 
+# Inputs: [0]=raw video, [1]=music, [2]=logo. Optional [3]=UI image to composite
+# (set UI_IMAGE=<path>; the filter must reference [3:v]).
+INPUTS=(-i "$RAW" -i "$MUSIC" -loop 1 -framerate 24 -i "$LOGO")
+if [ -n "${UI_IMAGE:-}" ]; then
+  [ -f "$UI_IMAGE" ] || { echo "Missing UI_IMAGE: $UI_IMAGE" >&2; exit 1; }
+  INPUTS+=(-loop 1 -framerate 24 -i "$UI_IMAGE")
+fi
+
 echo "==> Rendering final: $OUT"
-"$FFMPEG" -y \
-  -i "$RAW" \
-  -i "$MUSIC" \
-  -loop 1 -framerate 24 -i "$LOGO" \
+"$FFMPEG" -y "${INPUTS[@]}" \
   -filter_complex_script "$FILTER" \
   -map "[vout]" -map "[aout]" -t "$DUR" \
   -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 18 -preset medium \
