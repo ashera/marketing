@@ -12,6 +12,9 @@
 # scripts/generate.ps1 -Aspect 16:9 (costs credits but is purpose-shot).
 set -euo pipefail
 
+# Operates inside a product dir (run from it, or set PRODUCT_DIR=products/<name>).
+cd "${PRODUCT_DIR:-.}"
+
 IN="${1:-output/frockd-launch-final.mp4}"
 OUTDIR="${2:-output}"
 FFMPEG="${FFMPEG:-ffmpeg}"

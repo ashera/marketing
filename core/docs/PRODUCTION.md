@@ -1,12 +1,12 @@
 # Production Playbook
 
-The proven end-to-end workflow for making a frockd video short, plus the gotchas we've already solved (don't relearn them the hard way).
+The proven end-to-end workflow for making a product video short (frockd is the running example), plus the gotchas we've already solved (don't relearn them the hard way).
 
 ## Pipeline at a glance
 
 ```
 script ─▶ cost estimate ─▶ Higgsfield render ─▶ QC ─▶ post-production ─▶ verify ─▶ export
-         (scripts/generate.ps1)                       (scripts/postproduce.sh)   (scripts/export-formats.sh)
+         (core/scripts/generate.ps1)                  (core/scripts/postproduce.sh)  (core/scripts/export-formats.sh)
 ```
 
 1. **Write the script** — see word-count rule below.
@@ -15,7 +15,7 @@ script ─▶ cost estimate ─▶ Higgsfield render ─▶ QC ─▶ post-produ
 4. **QC** — download, extract frames, **listen** (accent + full URL), confirm the phone screen reads as frockd.
 5. **Post-production** — overlays + ducked music (`postproduce.sh`). Optional captions (`burn-captions.sh`).
 6. **Verify** — check the **audio stream duration** equals the video (see audio-clip gotcha).
-7. **Log** — record the prompt (submitted + enhanced), cost, and result in [`../prompt-log.md`](../prompt-log.md); record any new uploaded refs in [`../ref-ids.md`](../ref-ids.md).
+7. **Log** — record the prompt (submitted + enhanced), cost, and result in the product's [`prompt-log.md`](../../products/frockd/prompt-log.md); record any new uploaded refs in [`ref-ids.md`](../../products/frockd/ref-ids.md).
 
 ## Gotchas (already paid for — don't repeat)
 
@@ -42,7 +42,7 @@ Marketing Studio expands your prompt into a multi-shot storyboard and auto-style
 Avatar/UGC models render in-frame text as garbled. Burn overlays + the URL in `ffmpeg` (`postproduce.sh`), never via the generation prompt.
 
 ### 6. Music = post-production, and licence-clean only
-No music parameter exists on the model. Mix a **licence-cleared** track (Pixabay no-attribution, or CC with credit) under the VO at ~ -18 to -20 dB. See [brand.md](brand.md) and `../audio/`.
+No music parameter exists on the model. Mix a **licence-cleared** track (Pixabay no-attribution, or CC with credit) under the VO at ~ -18 to -20 dB. See [frockd's brand.md](../../products/frockd/brand.md) and the product's `audio/`.
 
 ### 7. Keep the raw render
 Always keep `output/*-raw.mp4`. It's the free re-edit point — change overlays/music without re-spending credits.

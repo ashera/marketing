@@ -8,7 +8,11 @@
 # Defaults target the launch video. Override ffmpeg via FFMPEG=/path/to/ffmpeg.
 #
 # Requires: ffmpeg (libx264, libfreetype/drawtext). Set FFMPEG/FFPROBE if not on PATH.
+# Operates inside a product dir; the paths below are relative to it.
+# Run from the product dir, or set PRODUCT_DIR=products/<name>.
 set -euo pipefail
+
+cd "${PRODUCT_DIR:-.}"
 
 RAW="${1:-output/frockd-launch-v2-raw.mp4}"
 OUT="${2:-output/frockd-launch-final.mp4}"

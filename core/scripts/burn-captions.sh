@@ -12,6 +12,9 @@
 # to drawtext (see output/filter.txt for the drawtext pattern).
 set -euo pipefail
 
+# Operates inside a product dir (run from it, or set PRODUCT_DIR=products/<name>).
+cd "${PRODUCT_DIR:-.}"
+
 IN="${1:-output/frockd-launch-final.mp4}"
 SRT="${2:-subtitles/frockd-launch.srt}"
 OUT="${3:-output/frockd-launch-captioned.mp4}"

@@ -59,4 +59,4 @@ Vertical/landscape avatar UGC video. Required: `--prompt`. Key params:
 | Web product (frockd.com.au) | `6f13aabd-2115-40f8-a081-3f4a2a7bb352` |
 | Phone-screen ref (listing detail) | `07d06fd7-74df-4930-856b-595bfa0ac944` |
 
-Full UUID → file map: [`../ref-ids.md`](../ref-ids.md). Hooks library (`hooks list`) is stunt/comedy-oriented — generally skip for premium brand tone.
+Full UUID → file map: [frockd's `ref-ids.md`](../../products/frockd/ref-ids.md). Hooks library (`hooks list`) is stunt/comedy-oriented — generally skip for premium brand tone.

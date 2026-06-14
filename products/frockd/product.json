@@ -1,0 +1,15 @@
+{
+  "name": "frockd",
+  "site": "https://www.frockd.com.au",
+  "avatar": "bba3087a-ad14-42c2-b51b-7c22b632abf4",
+  "setting": "b8368076-35eb-4045-b33b-74b2646d9863",
+  "web_product": "6f13aabd-2115-40f8-a081-3f4a2a7bb352",
+  "image": "07d06fd7-74df-4930-856b-595bfa0ac944",
+  "aspect": "9:16",
+  "resolution": "1080p",
+  "duration": 15,
+  "mode": "ugc",
+  "music": "audio/hitslab-upbeat-upbeat-music-333747.mp3",
+  "logo": "brand/frockd-logo.png",
+  "filter": "output/filter.txt"
+}

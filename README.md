@@ -1,90 +1,66 @@
-# frockd — Marketing Media
+# Marketing Studio — Monorepo
 
-Marketing creative for **[frockd.com.au](https://www.frockd.com.au)**, a peer-to-peer marketplace for buying and selling pre-loved formal dresses. This repo holds the generated video ads, the reference assets and brand kit they're built from, and the prompts/recipes used to produce them — so any asset can be reproduced or re-edited without starting from scratch.
+Video/marketing creative for multiple products, generated with **[Higgsfield](https://higgsfield.ai)** (Marketing Studio avatars + image/video models via the `higgsfield` CLI) and finished in **ffmpeg**.
 
-Creative is generated with **[Higgsfield](https://higgsfield.ai)** (Marketing Studio avatars + image/video models) via the `higgsfield` CLI, with final post-production (audio mix + text/logo overlays) done in **ffmpeg**.
+A shared **engine** holds the reusable workflow, scripts, and conventions; each **product** keeps its own brand kit, assets, prompts, and rendered videos.
 
-## Repository structure
+## Structure
 
 ```
 .
-├── output/                       # Rendered videos + post-production recipe
-│   ├── frockd-launch-final-v3.mp4    # ▶️ Finished 15s launch ad (1080×1920, 9:16)
-│   ├── frockd-launch-v2-raw.mp4      # Raw Higgsfield render (pre-overlay/music) — kept for re-edits
-│   ├── filter.txt                    # ffmpeg filter graph for the overlay + audio mix
-│   └── ovl/                          # Overlay text strings (drawtext sources)
-├── brand/                        # Brand kit
-│   ├── frockd-logo.png               # Transparent logo (wordmark + butterfly)
-│   ├── frockd-favicon.png
-│   └── fonts/ArchivoBlack-Regular.ttf  # frockd display font (matches site)
-├── audio/                        # Background music + licence certificate
-├── environment-refs/             # Environment/scene reference images
-├── app-screenshot-refs/          # frockd app screenshots (used as in-video phone screens)
-├── env-descriptors.md            # Scene descriptions for each environment ref (+ Higgsfield UUID)
-├── screenshot-descriptors.md     # UI descriptions for each app screenshot (+ Higgsfield UUID)
-├── ref-ids.md                    # Master map: Higgsfield UUID → local file
-├── prompt-log.md                 # Every generation prompt (submitted + enhanced), dated
-└── README.md
+├── core/                     # Shared engine (product-agnostic)
+│   ├── CONVENTIONS.md            # Standing workflow rules
+│   ├── docs/
+│   │   ├── PRODUCTION.md         # End-to-end playbook + solved gotchas + checklist
+│   │   └── higgsfield-reference.md  # Avatar/setting IDs, params, CLI quirks, costs
+│   └── scripts/
+│       ├── generate.ps1          # Render via higgsfield (cost-first; -Config product.json)
+│       ├── postproduce.sh        # Overlays + ducked music; verifies no audio end-clip
+│       ├── burn-captions.sh      # Burn SRT captions for silent autoplay
+│       └── export-formats.sh     # 9:16 → 1:1 / 16:9 with blurred-fill
+└── products/
+    └── frockd/               # A product (brand kit, assets, prompts, renders)
+        ├── product.json          # Config the core scripts read (avatar/setting/IDs/paths)
+        ├── brand.md              # Brand & voice guide
+        ├── output/               # Rendered videos + filter.txt (overlay/audio recipe)
+        ├── brand/ audio/ subtitles/ environment-refs/ app-screenshot-refs/
+        └── ref-ids.md  prompt-log.md  *-descriptors.md  README.md
 ```
 
-## Brand quick reference
+## Products
 
-| Token | Value | Use |
-|-------|-------|-----|
-| Display font | **Archivo Black** | Headings, logo wordmark, overlays |
-| Body font | Inter | — |
-| Rose accent | `#e07c8a` | CTAs, lower-third bars |
-| Blush background | `#fef9f8` | — |
-| Logo | `brand/frockd-logo.png` | Transparent, subtle corner placement |
+| Product | Folder |
+|---------|--------|
+| frockd — pre-loved formal-dress marketplace | [`products/frockd/`](products/frockd) |
 
-## How the launch ad was made
-
-1. **Reference assets** — environment photos and frockd app screenshots are uploaded to Higgsfield (`higgsfield upload create`); each returned UUID is logged in [`ref-ids.md`](ref-ids.md). Per-asset descriptions live in the `*-descriptors.md` files.
-2. **Generate** — a 15s vertical UGC video via Higgsfield Marketing Studio (`marketing_studio_video`), using the **Sofia** preset avatar, the **Bedroom** scene setting, the frockd web product, and a listing screenshot as the phone-screen reference. Audio (voice) generated in-model.
-3. **Post-production** — ffmpeg burns in branded text overlays (Archivo Black, white + shadow, rose `#e07c8a` lower-third for the URL), a subtle logo, and a ducked background-music bed. Recipe: [`output/filter.txt`](output/filter.txt).
-
-### Reproduce / re-edit
-
-The raw render (`output/frockd-launch-v2-raw.mp4`) is kept so overlays/music can be changed **without re-spending credits**. Re-run the post step with:
+## Quick start (make a video for a product)
 
 ```bash
-ffmpeg -y \
-  -i output/frockd-launch-v2-raw.mp4 \
-  -i audio/hitslab-upbeat-upbeat-music-333747.mp3 \
-  -loop 1 -framerate 24 -i brand/frockd-logo.png \
-  -filter_complex_script output/filter.txt \
-  -map "[vout]" -map "[aout]" -t 15.07 \
-  -c:v libx264 -profile:v high -pix_fmt yuv420p -crf 18 -preset medium \
-  -c:a aac -b:a 192k -movflags +faststart \
-  output/frockd-launch-final.mp4
+# 1. Cost estimate (safe; spends nothing)
+pwsh core/scripts/generate.ps1 -Config products/frockd/product.json -PromptFile prompt.txt
+
+# 2. Render (spends credits) + download the raw
+pwsh core/scripts/generate.ps1 -Config products/frockd/product.json -PromptFile prompt.txt -Go `
+     -OutFile products/frockd/output/my-video-raw.mp4
+
+# 3. Post-produce (overlays + ducked music), then optional captions / formats
+PRODUCT_DIR=products/frockd bash core/scripts/postproduce.sh
+PRODUCT_DIR=products/frockd bash core/scripts/burn-captions.sh
+PRODUCT_DIR=products/frockd bash core/scripts/export-formats.sh
 ```
 
-## Docs & tooling
+Then **log the prompt** (submitted + enhanced) in the product's `prompt-log.md` and any new uploads in `ref-ids.md` — see [`core/CONVENTIONS.md`](core/CONVENTIONS.md).
 
-| Path | What |
-|------|------|
-| [`docs/PRODUCTION.md`](docs/PRODUCTION.md) | End-to-end playbook + the gotchas we've already solved (pronunciation, word budget, audio-clip trap, enhancer behaviour) + pre-flight checklist |
-| [`docs/higgsfield-reference.md`](docs/higgsfield-reference.md) | Avatar / setting IDs, model params & CLI quirks, cost benchmarks |
-| [`docs/brand.md`](docs/brand.md) | Colours, fonts, logo usage, voice/tone, overlay spec, pronunciation lexicon |
-| [`scripts/generate.ps1`](scripts/generate.ps1) | Render via higgsfield (cost-estimate-first; `-Go` to spend). Known-good defaults baked in. |
-| [`scripts/postproduce.sh`](scripts/postproduce.sh) | Overlays + ducked music in one ffmpeg pass; verifies no audio end-clip |
-| [`scripts/burn-captions.sh`](scripts/burn-captions.sh) | Burn SRT captions (Archivo Black) for silent-autoplay feeds |
-| [`scripts/export-formats.sh`](scripts/export-formats.sh) | Repurpose 9:16 → 1:1 and 16:9 with blurred-fill background |
-| [`subtitles/frockd-launch.srt`](subtitles/frockd-launch.srt) | Caption timings for the launch ad |
+Scripts need the `higgsfield` CLI (authenticated) and **ffmpeg** (libx264; libass for captions). If ffmpeg isn't on `PATH`, set `FFMPEG`/`FFPROBE` env vars.
 
-Scripts require **ffmpeg** (with libx264; libass for captions). If ffmpeg isn't on `PATH`, set `FFMPEG`/`FFPROBE` env vars to the binaries. Run the `.sh` scripts with `bash scripts/<name>.sh`.
+## Add a new product
 
-## Conventions
+1. `mkdir -p products/<name>/{output,brand,audio,subtitles}`
+2. Add `products/<name>/product.json` (copy frockd's and swap the avatar/setting/web-product/image IDs + paths).
+3. Drop in the brand kit (logo, font) and an `output/filter.txt` overlay recipe (start from frockd's).
+4. Run the quick-start flow above with `-Config products/<name>/product.json` and `PRODUCT_DIR=products/<name>`.
 
-The canonical, detailed version lives in [`CONVENTIONS.md`](CONVENTIONS.md). In short:
+## Conventions & media
 
-- **`prompt-log.md`** — every image/video generation is logged here with title, datetime, description, cost, and both the **submitted** and **enhanced** prompts.
-- **`ref-ids.md`** — every Higgsfield reference upload is recorded as `UUID → file`.
-- **Cost first** — a Higgsfield cost estimate is run and reviewed before every paid render.
-- **Keep the raw** — the un-post-produced source render is always retained as the cheap re-edit point.
-
-## Licences
-
-- **Music** — `audio/hitslab-upbeat-upbeat-music-333747.mp3`, Pixabay Content License (commercial use, **no attribution required**); certificate in `audio/`.
-- **Font** — Archivo Black, SIL Open Font License.
-- Generated video/image assets are produced via Higgsfield under the account's plan.
+- Standing rules (prompt logging, ref-id logging, cost-first, keep-raw): [`core/CONVENTIONS.md`](core/CONVENTIONS.md).
+- **Git LFS** stores `*.mp4` / `*.mp3` (see `.gitattributes`) — install `git-lfs` before cloning so media materialises (`git lfs pull` if you only see pointer files).
