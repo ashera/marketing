@@ -47,11 +47,17 @@ No music parameter exists on the model. Mix a **licence-cleared** track (Pixabay
 ### 7. Keep the raw render
 Always keep `output/*-raw.mp4`. It's the free re-edit point — change overlays/music without re-spending credits.
 
-### 8. `ip_detected` blocks — and the low-res-first defence
-Higgsfield's IP/content filter can return **`ip_detected`** (no video) and it **charges credits with NO refund** (generic `failed` jobs DO auto-refund). Triggers seen: feeding a **web product** or **website screenshot** that embeds third-party stock imagery/branding into the model — instead, composite real UI/logos in **post** (IP-safe, and crisper). The filter is also **inconsistent** — the same recipe passed at 480p but blocked at 720p. Defences:
-- **Always run a cheap 480p test first** (cost scales: 480p≈52, 720p:75, 1080p:150); only spend on the full-res final after a clean low-res pass.
-- Don't feed website screenshots / web products with stock photos; add branding in post (`UI_IMAGE` input to `postproduce.sh`).
-- If full-res keeps blocking, **ship the post-produced upscaled 480p** raw — `output/filter.txt` scales the source to 1080×1920, so an upscaled 480p still yields a 1080-frame deliverable.
+### 8. `ip_detected` is a rights-confirmation HOLD, not a failure (confirmed by Higgsfield support)
+A render that returns **`ip_detected`** has actually **completed on the model side** — the status is a **rights-confirmation hold on the final step**, not a failed generation. Consequences:
+- **Credits are spent and NOT refunded** (the work was produced) — unlike generic `failed` jobs, which auto-refund.
+- **The output is NOT lost.** It lands in the **Assets tab** of the Higgsfield web app and is downloadable after a one-click **rights confirmation** (confirming the input/output rights are yours). For fully AI-generated content with image inputs removed, it's a straight tick-through.
+- The **CLI** shows `status: ip_detected` with an empty `result_url` (the tick-through is web-UI only) — so **retrieve held runs from the Assets tab, not the CLI.**
+- The hold is more likely when inputs carry rights ambiguity (**web products / website screenshots with third-party stock photos**), but can fire on clean runs too. Composite real UI/branding in **post** (`UI_IMAGE` input to `postproduce.sh`) to reduce holds and keep it crisp.
+
+Defences (still worth it for cost + QC):
+- **Run a cheap 480p test first** (cost scales: 480p≈52, 720p:75, 1080p:150) to validate content/audio before the full-res final.
+- If a full-res run holds, **download it from the Assets tab** (tick-through) — you've already paid for it; no need to re-render.
+- `output/filter.txt` scales any source up to 1080×1920, so even a 480p source yields a 1080-frame deliverable if needed.
 
 ## Pre-flight checklist
 
