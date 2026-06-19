@@ -50,8 +50,7 @@ Always keep `output/*-raw.mp4`. It's the free re-edit point — change overlays/
 ### 8. `ip_detected` is a rights-confirmation HOLD, not a failure (confirmed by Higgsfield support)
 A render that returns **`ip_detected`** has actually **completed on the model side** — the status is a **rights-confirmation hold on the final step**, not a failed generation. Consequences:
 - **Credits are spent and NOT refunded** (the work was produced) — unlike generic `failed` jobs, which auto-refund.
-- **The output is NOT lost.** It lands in the **Assets tab** of the Higgsfield web app and is downloadable after a one-click **rights confirmation** (confirming the input/output rights are yours). For fully AI-generated content with image inputs removed, it's a straight tick-through.
-- The **CLI** shows `status: ip_detected` with an empty `result_url` (the tick-through is web-UI only) — so **retrieve held runs from the Assets tab, not the CLI.**
+- **Recovery is unreliable.** Support says held outputs appear in the **Assets tab** after a one-click rights confirmation — but in practice our three held runs did **not** show up there (only normally-completed runs did). The **CLI** also keeps `status: ip_detected` with an empty `result_url`. So **do not count on recovering a held run**; if you need it, **escalate to support** to surface it or refund.
 - The hold is more likely when inputs carry rights ambiguity (**web products / website screenshots with third-party stock photos**), but can fire on clean runs too. Composite real UI/branding in **post** (`UI_IMAGE` input to `postproduce.sh`) to reduce holds and keep it crisp.
 
 Defences (still worth it for cost + QC):
